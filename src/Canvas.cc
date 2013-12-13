@@ -277,7 +277,7 @@ NAN_METHOD(Canvas::ToBuffer) {
 
     if (!args[2]->StrictEquals(Undefined())) {
       if (args[2]->IsUint32()) {
-        filter = args[1]->Uint32Value();
+        filter = args[2]->Uint32Value();
       } else {
         return NanThrowTypeError("Invalid filter value.");
       }
@@ -501,6 +501,7 @@ Canvas::~Canvas() {
       break;
     case CANVAS_TYPE_IMAGE:
       cairo_surface_destroy(_surface);
+      V8::AdjustAmountOfExternalAllocatedMemory(-4 * width * height);
       break;
   }
 }
